@@ -1,13 +1,4 @@
 ﻿  Interpreter.cpp
-C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(30,12): error C2365: 'Token::type': redefinition; previous definition was 'member function'
-C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(19): message : see declaration of 'Token::type'
-C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(31,12): error C2365: 'Token::value': redefinition; previous definition was 'member function'
-C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(24): message : see declaration of 'Token::value'
-C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(16,20): error C2659: '=': function as left operand
-C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(17,21): error C2659: '=': function as left operand
-C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(21,1): error C3867: 'Token::type': non-standard syntax; use '&' to create a pointer to member
-C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(21,1): error C2440: 'return': cannot convert from 'std::string (__thiscall Token::* )(void)' to 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
-C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(21,1): message : No constructor could take the source type, or constructor overload resolution was ambiguous
-C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(26,1): error C3867: 'Token::value': non-standard syntax; use '&' to create a pointer to member
-C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(26,1): error C2440: 'return': cannot convert from 'std::string (__thiscall Token::* )(void)' to 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
-C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(26,1): message : No constructor could take the source type, or constructor overload resolution was ambiguous
+C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(84,23): warning C4018: '>': signed/unsigned mismatch
+C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(164): warning C4715: 'Interpreter::getNextToken': not all control paths return a value
+  Interpreter.vcxproj -> C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Debug\Interpreter.exe
