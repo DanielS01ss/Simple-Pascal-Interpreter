@@ -1,4 +1,6 @@
 ﻿  Interpreter.cpp
-C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(84,23): warning C4018: '>': signed/unsigned mismatch
-C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(164): warning C4715: 'Interpreter::getNextToken': not all control paths return a value
+C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(86,23): warning C4018: '>': signed/unsigned mismatch
+C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(104,23): warning C4018: '>': signed/unsigned mismatch
+C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(209): warning C4715: 'Interpreter::getNextToken': not all control paths return a value
+C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Interpreter.cpp(282): warning C4715: 'Interpreter::manipulate_calculation': not all control paths return a value
   Interpreter.vcxproj -> C:\Users\stanc\Desktop\Interpreter in c++\Interpreter\Debug\Interpreter.exe

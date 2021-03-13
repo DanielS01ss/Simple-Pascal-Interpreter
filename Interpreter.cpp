@@ -52,8 +52,10 @@ void Token::setType(string type)
 
 /*
     
-    ->Fa modificari la cod astfel incat sa sare peste spatii albe
-    ->Fa modificari ca in loc de + sa manipuleze si - sa evalueze si operatii ca 7 - 5
+     Fa ca , calculatorul sa poata manipula:
+       
+        -> sa accepte un numar arbitrar de operatii momentan vom zice doar adunare si scadere
+        pentru ca la result vine problema si de ordinea operatiilor asa ca este de lucru acolo
     
 
 */
@@ -99,7 +101,11 @@ public:
             }
             this->pos--;
         }
-       
+        if (this->pos > text.size() - 1)
+        {
+            currentToken.setType("EOF");
+            return currentToken;
+        }
        
         ///daca caracterul current este un intreg
         ///caracterul curent il procesam ca si un integer
@@ -119,10 +125,10 @@ public:
             }
             currentToken.setText(auxInteger);
             currentToken.setType("INTEGER");
-            
+            this->wasInt = 1;
             return currentToken;
         }
-
+       
         if (currChar == '+')
         {
             string aux;
@@ -130,9 +136,10 @@ public:
             currentToken.setText(aux);
             currentToken.setType("PLUS");
             this->pos++;
-            if (this->sign == '.')
+            if (this->wasInt == 1)
             {
                 this->sign = '+';
+                this->wasInt = 0;
             }
             else {
                 this->error();
@@ -146,11 +153,12 @@ public:
             string aux;
             aux.push_back(currChar);
             currentToken.setText(aux);
-            currentToken.setType("PLUS");
+            currentToken.setType("MINUS");
             this->pos++;
-            if (this->sign == '.')
+            if (this->wasInt == 1)
             {
                 this->sign = '-';
+                this->wasInt = 0;
             }
             else {
                 this->error();
@@ -160,6 +168,43 @@ public:
 
         }
 
+        if (currChar == '*')
+        {
+            string aux;
+            aux.push_back(currChar);
+            currentToken.setText(aux);
+            currentToken.setType("MULTIPLICATION");
+            this->pos++;
+            if (this->wasInt == 1)
+            {
+                this->sign = '*';
+                this->wasInt = 0;
+            }
+            else {
+                this->error();
+            }
+            return currentToken;
+        }
+
+        if (currChar == '/')
+        {
+            string aux;
+            aux.push_back(currChar);
+            currentToken.setText(aux);
+            currentToken.setType("DIVISION");
+            this->pos++;
+            if (this->wasInt==1)
+            {
+                this->sign = '/';
+                this->wasInt = 0;
+            }
+            else {
+                this->error();
+            }
+            return currentToken;
+        }
+
+
         this->error();
     }
 
@@ -168,30 +213,103 @@ public:
     {
         if (this->currentToken.getType() != token_type)
             this->error();
-        this->currentToken = this->getNextToken();
+       
     }
+    void handleOperation(Token op)
+    {
+        if (op.getType() == "PLUS")
+        {
+            this->eat("PLUS");
+            this->currentToken = this->getNextToken();
+        }
+            
+        else if (op.getType() == "MINUS")
+        {
+            this->eat("MINUS");
+            this->currentToken = this->getNextToken();
+        }
+        else if (op.getType() == "MULTIPLICATION")
+        {
+            this->eat("MULTIPLICATION");
+            this->currentToken = this->getNextToken();
+        }
+        else if (op.getType() == "DIVISION")
+        {
+            this->eat("DIVISION");
+            this->currentToken = this->getNextToken();
+        }
+        else {
+            this->error();
+        }
+    }
+    int manipulate_calculation(Token left,Token right)
+    {
+        int result;
+        if (this->sign == '+')
+        {
+            result = stoi(left.getText()) + stoi(right.getText());
+            return result;
+        }
+
+        else if (this->sign == '-')
+        {
+            result = stoi(left.getText()) - stoi(right.getText());
+            return result;
+        }
+
+        else if (this->sign == '*')
+        {
+            result = stoi(left.getText()) * stoi(right.getText());
+            return result;
+        }
+        else if (this->sign == '/')
+        {
+            int leftOperand = stoi(left.getText());
+            int rightOperand = stoi(right.getText());
+
+            if (rightOperand == 0)
+            {
+                this->error();
+            }
+
+            int result = leftOperand / rightOperand;
+            return result;
+        }
+
+        else
+            this->error();
+
+    }
+
     int expr()
     {
         this->currentToken = this->getNextToken();
-        Token left = this->currentToken;
+        int operandType = 0;
+
+        ///daca operand type este 0 ne asteptam la integer
+        ///daca nu ne asteptam la o operatie gen plus sau minus
+        Token left;
+        Token right;
+        left = this->currentToken;
         ///ce face functia eat este ca verifica daca tokenul current este correct
         ///adica noi ne asteptam ca cel din stanga sa fie int si daca nu este int atunci facem urat
         this->eat("INTEGER");
-
-        Token op = this->currentToken;
-        ///apelam iara functia eat sa verificam daca tokenul current este cel bun si face ce trebuie
-        ///anume daca este token care corespunde operatii de plus
-        this->eat("PLUS");
+        this->currentToken = this->getNextToken();
+        int result = stoi(left.getText());
         
-        Token right = this->currentToken;
-        this->eat("INTEGER");
-        int result;
-        if(this->sign == '+')
-             result = stoi(left.getText())  + stoi(right.getText()) ;
-        else if(this->sign == '-')
-            result = stoi(left.getText()) - stoi(right.getText());
-        else 
-            this->error();
+        while (this->currentToken.getType() != "EOF")
+        {
+            left.setText(to_string(result));
+            Token op = this->currentToken;
+            ///apelam iara functia eat sa verificam daca tokenul current este cel bun si face ce trebuie
+            ///anume daca este token care corespunde operatii de plus
+            this->handleOperation(op);
+            ///si acuma ar trebui sa stocam intr-un token result;
+            right = this->currentToken;
+            this->eat("INTEGER");
+            result = manipulate_calculation(left, right);
+            this->currentToken = this->getNextToken();
+        }
         return result;
     }
 
@@ -200,6 +318,7 @@ private:
     string text;
     int pos=0;
     Token currentToken;
+    int wasInt = 0;
     char sign = '.';
 
 };
